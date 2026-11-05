@@ -27,7 +27,7 @@ Temporary add-ons are removed when Firefox restarts. Permanent installation in s
 3. Create a new script in the manager, replace its template with the **entire file**, and save.
 4. Refresh StudentVUE. The same row editors and grade preview appear without the standalone extension.
 
-Because this repository is private, a raw GitHub URL may not be accessible to a script manager. Copying the downloaded file avoids that issue. There is no remote `@require`, automatic update URL, or dependency download. Install updated versions by replacing the script contents. The script uses `@grant none`, runs at `document-idle`, and is limited to the district portal and the top-level page; see [Tampermonkey metadata documentation](https://www.tampermonkey.net/documentation.php). Turn off the standalone extension if you choose the userscript. Duplicate UI is guarded against, but running a single version avoids an older copy taking precedence.
+This repository is public at [verityhoangjacob67/gradepreview](https://github.com/verityhoangjacob67/gradepreview). You can also [open the raw userscript](https://raw.githubusercontent.com/verityhoangjacob67/gradepreview/main/userscript/gradepreview.user.js) to install it through your script manager. There is no remote `@require`, automatic update URL, or dependency download. Install updated versions by replacing the script contents. The script uses `@grant none`, runs at `document-idle`, and is limited to the district portal and the top-level page; see [Tampermonkey metadata documentation](https://www.tampermonkey.net/documentation.php). Turn off the standalone extension if you choose the userscript. Duplicate UI is guarded against, but running a single version avoids an older copy taking precedence.
 
 ## Use
 
