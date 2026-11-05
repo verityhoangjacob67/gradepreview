@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "GradePreview for StudentVUE",
+  "version": "1.3.9",
+  "description": "Preview how assignment and test scores affect your StudentVUE grade.",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://synergyportal.anoka.k12.mn.us/*"
+      ],
+      "js": [
+        "core.js",
+        "importer.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "GradePreview for StudentVUE"
+  }
+}

@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict');
+const {calculate,parsePoints}=require('../core.js');
+const r=(earned,possible,category='A',include=true)=>({earned,possible,category,include});
+assert.equal(calculate([r(80,100),r(10,20)],'points',{}),75);
+assert.equal(calculate([r(90,100,'Tests'),r(100,100,'HW')],'weighted',{Tests:90,HW:10}),91);
+assert.equal(calculate([r('',100),r(0,100)],'points',{}),0);
+assert.equal(calculate([r(1,1,'A',false)],'points',{}),null);
+assert.equal(calculate([r(10,10),r(2,0)],'points',{}),120);
+assert.equal(calculate([r(90,100,'A'),r('',10,'B')],'weighted',{A:80,B:20}),90);
+assert.throws(()=>calculate([r(1,1)],'weighted',{A:''}));
+assert.throws(()=>calculate([r(-1,1)],'points',{}));
+assert.deepEqual(parsePoints('100.00/110.0000'),{earned:100,possible:110});
+assert.deepEqual(parsePoints('1,200/1,300'),{earned:1200,possible:1300});
+assert.equal(parsePoints('Not Graded'),null);
+console.log('11 calculation and parsing checks passed.');
