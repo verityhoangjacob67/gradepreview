@@ -10,7 +10,19 @@ const summary=grid('sum',[['Assignment Type',1],['Weight',2],['Points',3],['Poin
 const assignments=grid('asg',heads,[row('Test one','Tests','80 out of 100','80.00/100.0000'),row('Practice','Homework','100 out of 100','100/100'),row('Future quiz','Tests','Not Graded','44.0000 Points Possible'),row('Optional','Tests','3 out of 3','3/3','(Not For Grading)')]);
 const dom=new JSDOM('<main><div role=toolbar><input role=combobox value=Term1><input role=combobox value=ClassA></div><div id=gradebook-content><div class=gb-current-grade><div id=current-grade><div class=mark>A</div><div class=score>86%</div></div></div>'+summary+'<div id=assignment-details>'+assignments+'</div></div></main>',{url:'https://synergyportal.anoka.k12.mn.us/',runScripts:'outside-only'});
 const w=dom.window;w.structuredClone=structuredClone;
-for(const f of ['core.js','importer.js','content.js'])w.eval(fs.readFileSync(dir+f,'utf8'));
+const isUserscript=process.argv.includes('--userscript');
+if(isUserscript){
+ const bundle=require('../scripts/build.cjs').userscript();
+ assert.equal(bundle,fs.readFileSync(dir+'userscript/gradepreview.user.js','utf8'));
+ // The page may already own helper globals; the userscript must leave them untouched.
+ w.SynergyMath={pageOwned:true};w.SynergyImport={pageOwned:true};w.module={exports:{pageOwned:true}};
+ w.eval(bundle);w.eval(bundle);
+ assert.equal(w.document.querySelectorAll('#synergy-grade-sandbox').length,1);
+ assert.equal(w.SynergyMath.pageOwned,true);assert.equal(w.SynergyImport.pageOwned,true);assert.equal(w.module.exports.pageOwned,true);
+ const offsite=new JSDOM('<body></body>',{url:'https://example.com/',runScripts:'outside-only'});offsite.window.eval(bundle);assert.equal(offsite.window.document.querySelector('#synergy-grade-sandbox'),null);offsite.window.close();
+}
+// Load helpers in the test window for calculation assertions. UI itself is already booted in userscript mode.
+for(const f of ['core.js','importer.js',...(isUserscript?[]:['content.js'])])w.eval(fs.readFileSync(dir+f,'utf8'));
 const result=w.SynergyImport.readGradebook(w.document);
 assert.equal(result.rows.length,4);assert.equal(result.rows[2].earned,'');assert.equal(result.rows[2].possible,44);assert.equal(result.rows[3].include,false);
 assert.equal(result.mode,'weighted');assert.equal(result.weights.Tests,70);assert.equal(result.warnings.length,0);

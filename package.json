@@ -1,9 +1,10 @@
 {
   "name": "gradepreview-for-studentvue",
-  "version": "1.3.9",
+  "version": "1.4.0",
   "private": true,
   "scripts": {
-    "test": "node tests/calculator.cjs && node tests/extension.cjs"
+    "test": "node tests/calculator.cjs && node tests/extension.cjs && node tests/extension.cjs --userscript",
+    "build": "node scripts/build.cjs"
   },
   "devDependencies": {
     "jsdom": "30.1.3"
