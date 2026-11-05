@@ -1,60 +1,87 @@
 # GradePreview for StudentVUE
 
-Use the same calculator as a Chrome extension, a Firefox extension (Firefox 140+), or a self-contained userscript. Choose one installation method per browser profile.
+Preview how a different assignment or test score would affect your grade, right inside StudentVUE.
 
-## Install in Chrome
+Works with the [Anoka-Hennepin StudentVUE portal](https://synergyportal.anoka.k12.mn.us/) as a **Chrome extension**, **Firefox extension**, or **userscript**.
 
-1. Download this repository using **Code → Download ZIP**, then extract it to a permanent folder.
-2. Open `chrome://extensions`.
-3. Enable **Developer mode**, click **Load unpacked**, and select the folder containing `manifest.json`.
-4. Refresh StudentVUE. Open **Grade Book** and choose a class. Click **What if** beside an assignment's points to reveal its small score editor. A separate **What-if grade** appears directly below the actual grade.
+## What it does
 
-## Install in Firefox
+- Adds a **What-if grade** below your actual grade.
+- Lets you try scores in a small editor beside each assignment.
+- Uses your class's grading categories and weights.
+- Supports hypothetical assignments and one-click resets.
 
-For temporary development installation:
+## Install
 
-1. Download and extract this repository.
-2. Open `about:debugging#/runtime/this-firefox` in Firefox 140 or newer.
-3. Click **Load Temporary Add-on**, then select the root `manifest.json`.
-4. Open or refresh StudentVUE and choose a class in Grade Book.
+Choose one installation method per browser.
 
-Temporary add-ons are removed when Firefox restarts. Permanent installation in standard Firefox requires a Mozilla-signed add-on; this repository is not yet signed or published on Firefox Add-ons. See [Mozilla's signing documentation](https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/). The manifest includes a stable Firefox add-on ID and declares no data collection, following [Mozilla's manifest reference](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/browser_specific_settings).
+### Userscript
 
-## Install as a userscript
+1. Install Tampermonkey or Violentmonkey in your browser.
+2. [Open the userscript](https://raw.githubusercontent.com/verityhoangjacob67/gradepreview/main/userscript/gradepreview.user.js) and confirm installation in your script manager.
+3. Refresh StudentVUE.
 
-1. Install a userscript manager such as Tampermonkey or Violentmonkey for your browser.
-2. Download this repository and open `userscript/gradepreview.user.js` in a text editor.
-3. Create a new script in the manager, replace its template with the **entire file**, and save.
-4. Refresh StudentVUE. The same row editors and grade preview appear without the standalone extension.
+If the link opens as plain text, create a new script in your manager, paste the entire file, and save.
 
-This repository is public at [verityhoangjacob67/gradepreview](https://github.com/verityhoangjacob67/gradepreview). You can also [open the raw userscript](https://raw.githubusercontent.com/verityhoangjacob67/gradepreview/main/userscript/gradepreview.user.js) to install it through your script manager. There is no remote `@require`, automatic update URL, or dependency download. Install updated versions by replacing the script contents. The script uses `@grant none`, runs at `document-idle`, and is limited to the district portal and the top-level page; see [Tampermonkey metadata documentation](https://www.tampermonkey.net/documentation.php). Turn off the standalone extension if you choose the userscript. Duplicate UI is guarded against, but running a single version avoids an older copy taking precedence.
+### Chrome
 
-## Use
+1. [Download the repository](https://github.com/verityhoangjacob67/gradepreview/archive/refs/heads/main.zip) and extract it to a permanent folder.
+2. Open `chrome://extensions` and enable **Developer mode**.
+3. Click **Load unpacked** and select the folder containing `manifest.json`.
+4. Refresh StudentVUE.
 
-The calculator appears within the class page and automatically reads loaded assignments. Open **Grid** beside the category chart to load the Grade Calculation Summary; weights update automatically while your scenario is unchanged. Clear assignment filters and load all assignment rows/pages. Use **Refresh from gradebook** when you want to replace your scenario with the latest loaded grades. The extension matches cells to their header IDs across Synergy's separate header and body tables, including categories hidden by the narrow layout. Verify the imported row count and values. Ungraded rows retain their possible points, with blank earned scores. Work labeled Not For Grading, Excused, or Excluded is unchecked.
+### Firefox
 
-Category weights are imported from the Grade Calculation Summary and weighted mode is selected automatically when weights are available. Imported assignment totals are compared with each summary category; mismatches produce a warning. If weights are unavailable, the calculator warns you: select Grid and import again, or enter weights manually. Use Total points only for classes graded by total points. Categories with no graded points are omitted and remaining weights are normalized.
+Requires Firefox 140 or newer. This is a temporary installation.
 
-Assignment editors start collapsed. Click **What if** to open one, then edit earned or possible points in its small box. The opener hides while editing. Click × or press Escape to close it; your edits remain applied and appear in the button label. The large panel stays closed. Changed boxes are highlighted and have a per-assignment **Reset**. Include or exclude assignments using the Count column in More options. Blank earned scores are ignored; zero counts. The preview below your actual grade shows the estimated percentage, plus a warning when inputs or loaded data need checking. Your official grade and assignment scores remain untouched.
+1. Download and extract the repository.
+2. Open `about:debugging#/runtime/this-firefox`.
+3. Click **Load Temporary Add-on** and select `manifest.json`.
+4. Refresh StudentVUE.
 
-The Category column uses a dropdown of the imported class categories.
+Firefox removes temporary add-ons when it restarts. The userscript is another option for Firefox.
 
-**More options**, inside the what-if grade box, opens the optional advanced calculator for adding hypothetical assignments, setting weights, or refreshing data. **Reset changes** beneath the preview restores imported scores, weights, and grading mode. Switching classes keeps a separate draft for each class during the current page session. Changed scenarios are preserved when the portal updates, with a prompt to refresh. These drafts disappear on a full page reload. There are no scenario saving controls or persistent storage permissions.
+## Try a score
 
-Estimates do not implement dropped scores, standards grading, teacher-specific rules, or official rounding. Verify the baseline against StudentVUE before using a prediction. The live markup and summaries were inspected in two classes. Automated tests run both the extension scripts and the userscript against synthetic fixtures, including inline editing, reset, category selection, and class switching. Tests also check userscript isolation, duplicate injection, and site restriction. Live installation in Firefox and userscript managers has not yet been verified.
+1. Open **Grade Book** and choose a class.
+2. Click **What if** beside an assignment's points.
+3. Change the earned or possible points. The preview updates immediately.
+4. Click **×** or press **Escape** to close the editor. Your changes stay applied.
+
+Use **Reset** inside an editor to restore that assignment, or **Reset changes** below the grade preview to start over.
+
+**More options** lets you add hypothetical assignments, choose categories, adjust weights, and refresh grades from the page.
+
+## If the preview looks wrong
+
+- Clear assignment filters and load all rows or pages.
+- Open **Grid** beside the category chart to load the grading summary.
+- Choose **More options → Refresh from gradebook** to start from the latest loaded scores.
+- Check that the grading method and weights match your class.
+
+The preview is an estimate. Dropped scores, standards-based grading, teacher-specific rules, and official rounding can produce different results. Blank scores are excluded; zero counts as a score.
 
 ## Privacy
 
-Only this district's HTTPS portal is matched. There are no network requests, analytics, remote dependencies, or credential access. The extension requests no extension API permissions. Entered/imported grades are kept only in memory during the page session. No actual student data is bundled.
+Your official grades are never changed. Scores stay in memory during the page session; reloading the page clears your what-if changes. There are no accounts, analytics, or uploads of your grades.
 
-## Files
+This project is independent of Anoka-Hennepin and Edupoint.
 
-Manifest V3, plain JavaScript. The root extension files work directly in Chrome and Firefox without a build step. `core.js` contains calculation and point parsing; `importer.js` reads gradebook DOM; `content.js` adds an isolated interface on the portal. `popup.html` provides an extension toolbar shortcut. `scripts/build.cjs` combines these same source files into `userscript/gradepreview.user.js`, keeping helper objects private to the userscript. This is an independent project, unaffiliated with the district or Edupoint.
+<details>
+<summary><strong>Development and updates</strong></summary>
 
-## Updating an earlier version
+The extension uses plain JavaScript and needs no build step. To regenerate the userscript and run the tests:
 
-Replace the old extension folder's files with this version. At `chrome://extensions`, click the extension's Reload button, then refresh StudentVUE. Older saved scenarios are no longer read by this version.
+```sh
+npm install
+npm run build
+npm test
+```
 
-## Development checks
+The tests use synthetic grades and cover the extension and userscript. Live Firefox and userscript-manager installation has not yet been verified.
 
-Run `npm install`, `npm run build`, then `npm test`. After changing source files, regenerate and commit the userscript using `npm run build`. The tests verify that the checked-in userscript matches its sources. Test fixtures use synthetic grades and include no student identifiers. The extension and generated userscript have no runtime dependencies.
+After editing source files, regenerate and commit `userscript/gradepreview.user.js`. The tests check that it matches the source.
+
+To update an installed extension, replace its files, reload it in the browser's extension manager, and refresh StudentVUE. To update the userscript, install the latest file again.
+
+</details>
